@@ -5,7 +5,7 @@ import json
 import datetime
 from django.views.generic import View
 from django.http import HttpResponse
-from .models import User, Route, Image, Location, Node
+from .models import User, Route, Image, Radio, Location, Node
 import os
 
 
@@ -127,12 +127,11 @@ class RadioHandler(View):
 
     def get(self, request):
         d = request.GET.get('name')
-        radios = Image.objects.filter(user_name=d)
+        radios = Radio.objects.filter(user_name=d)
         resp = []
         for radio in radios:
-            md5 = radio.md5
-            path = 'upload/%s.arm' % md5
-            resp.append(path)
+            r_url = radio.content.url
+            resp.append(p_url)
 
         return HttpResponse(json.dumps(resp), status=200)
 
