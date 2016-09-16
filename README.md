@@ -1,0 +1,2 @@
+# Power-Navifation
+django excise
