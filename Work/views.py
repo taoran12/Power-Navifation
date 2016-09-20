@@ -5,7 +5,7 @@ import json
 import datetime
 from django.views.generic import View
 from django.http import HttpResponse
-from .models import User, Route, Image, Radio, Location, Node
+from .models import User, Route, Image, Location, Node, Radio
 import os
 
 
@@ -108,7 +108,6 @@ class ImageHandler(View):
             data = request.FILES['image']
             d = request.GET.get('name')
             new_img = Image(user_name=d, content=data)
-            print new_img.content.url
             new_img.save()
             return_code = 0
             return_msg = "ok"
@@ -119,38 +118,26 @@ class ImageHandler(View):
             status_code = 202
         return self._response(return_code, return_msg, status_code)
 
-    def _response(self,return_code,return_msg,status_code):
-        result = {'code' : return_code, 'msg':return_msg}
-        return HttpResponse(json.dumps(result),status=status_code)
+    def _response(self, return_code, return_msg, status_code):
+        result = {'code': return_code, 'msg': return_msg}
+        return HttpResponse(json.dumps(result), status=status_code)
 
 class RadioHandler(View):
-
     def get(self, request):
         d = request.GET.get('name')
-        radios = Radio.objects.filter(user_name=d)
+        radios = Image.objects.filter(user_name=d)
         resp = []
         for radio in radios:
             r_url = radio.content.url
-            resp.append(p_url)
-
+            resp.append(r_url)
         return HttpResponse(json.dumps(resp), status=200)
 
     def post(self, request):
         try:
-            data = request.FILES['image'].read()
-            d=request.GET.get('name')
-            m = hashlib.md5()
-            m.update(data)
-            hashed = m.hexdigest()
-            path = '/Users/taoran/radio' + d
-            if not os.path.exists(path):
-                os.makedirs(path)
-            photo_path = path + '/' + hashed
-            f = open(photo_path, 'wb')
-            f.write(data)
-            f.close()
-            i = Redio(user_name=d, md5=hashed)
-            i.save()
+            data = request.FILES['radio']
+            d = request.GET.get('name')
+            new_radio = Radio(user_name=d, content=data)
+            new_radio.save()
             return_code = 0
             return_msg = "ok"
             status_code = 200
@@ -160,9 +147,9 @@ class RadioHandler(View):
             status_code = 202
         return self._response(return_code, return_msg, status_code)
 
-    def _response(self,return_code,return_msg,status_code):
-        result = {'code' : return_code, 'msg':return_msg}
-        return HttpResponse(json.dumps(result),status=status_code)
+    def _response(self, return_code, return_msg, status_code):
+        result = {'code': return_code, 'msg': return_msg}
+        return HttpResponse(json.dumps(result), status=status_code)
 
 
 class RouteHandler(View):

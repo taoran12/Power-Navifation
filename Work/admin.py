@@ -78,7 +78,7 @@ def write_user_xls(objs,file_str,log=None):
                 xls_sheet.write(i+1,9,objs[i].meter_number,style)
                 xls_sheet.write(i+1,10,objs[i].collection_unit,style)
                 xls_sheet.write(i+1,11,objs[i].remark1,style)
-                
+
 
     except Exception,e:
         print u"导出失败："+str(e)
@@ -157,11 +157,6 @@ class NodeAdmin(admin.ModelAdmin):
     search_fields=('dis_num',)
 class ImageAdmin(admin.ModelAdmin):
     list_display = ('_id','user_name','get_url')
-    search_fields=('dis_num',)
-
-    # def get_photo(self, obj):
-    #     url = "http://localhost:8000/api/photo?name=%s" % obj.md5
-    #     return "<a href='%s' target=\"_blank\">点击查看</a>" % url
 
     def get_url(self, obj):
         return u'<a href="%s" target="_blank">查看</a>' % obj.content.url
@@ -169,11 +164,14 @@ class ImageAdmin(admin.ModelAdmin):
     get_url.short_description = 'URL'
     get_url.allow_tags = True
 
-    # get_photo.short_description = "所属图片"
-    # get_photo.allow_tags = True
 class RadioAdmin(admin.ModelAdmin):
-    list_display = ('_id','user_name','md5')
-    search_fields=('dis_num',)
+    list_display = ('_id','user_name','get_url')
+
+    def get_url(self, obj):
+        return u'<a href="%s" target="_blank">查看</a>' % obj.content.url
+
+    get_url.short_description = 'URL'
+    get_url.allow_tags = True
 
 admin.site.register(Route,RouteAdmin)
 admin.site.register(User,UserAdmin)

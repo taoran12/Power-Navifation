@@ -98,13 +98,7 @@ class Node(models.Model):
 class Image(models.Model):
     _id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=255, verbose_name=u'户号')
-    # md5 = models.CharField(max_length=255, verbose_name=u'md5值', unique=True)
-    content = models.ImageField(upload_to='images',default='a')
-
-    # def get_url(self):
-    #     # return os.path.join(settings.MEDIA_URL, self.user_name)
-    #     path =os.path.join(settings.MEDIA_URL, self.md5)
-    #     return path
+    content = models.ImageField(upload_to='images', default='a')
 
     class Meta:
         db_table = 'image'
@@ -117,7 +111,9 @@ class Image(models.Model):
 class Radio(models.Model):
     _id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=255, verbose_name=u'户号')
-    md5 = models.CharField(max_length=255, verbose_name=u'md5值')
+    content = models.FileField(upload_to='radio', default='a')
+
+    #md5 = models.CharField(max_length=255, verbose_name=u'md5值')
     class Meta:
         db_table = 'radio'
         verbose_name = "语音信息"
